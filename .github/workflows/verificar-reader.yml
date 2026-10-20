@@ -28,3 +28,5 @@ jobs:
           python tools/verificar_ambiente.py
       - name: Testar catalogo de vozes com resposta simulada
         run: python -m unittest discover -s tests -p 'test_catalogo_simulado.py' -v
+      - name: Testar falha de autenticacao sem rede
+        run: python -m unittest discover -s tests -p 'test_erro_autenticacao_simulado.py' -v
