@@ -729,10 +729,10 @@ class ElevenLabsTTSClient:
                 
         elif method == "auto":
             # Auto mode: Try all methods in order of preference
+            # Reader-only by default: never fall back to official API methods
+            # that might consume account credits without explicit selection.
             methods_to_try = [
-                ("reader", "Reader WebSocket (FREE)", self._stream_reader_websocket_flows),
-                ("http", "HTTP streaming", self._stream_http_direct),
-                ("websocket", "Direct WebSocket", self._stream_direct_websocket)
+                ("reader", "Reader WebSocket", self._stream_reader_websocket_flows)
             ]
             
             for method_name, method_desc, method_func in methods_to_try:
