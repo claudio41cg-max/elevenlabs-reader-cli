@@ -1026,10 +1026,12 @@ class ElevenLabsTTSClient:
                 self._stop_realtime_player(realtime_player)
 
             # Handle output
-            if output_file:
+            if output_file and audio_data:
                 with open(output_file, "wb") as f:
                     f.write(audio_data)
                 print(f"💾 Saved audio to {output_file}")
+            elif output_file:
+                print("⚠️ Reader não retornou áudio; arquivo vazio não será criado.")
 
             return audio_data
         except Exception as e:
@@ -1458,10 +1460,12 @@ class ElevenLabsTTSClient:
                 self._stop_realtime_player(realtime_player)
 
             # Handle output
-            if output_file:
+            if output_file and audio_data:
                 with open(output_file, "wb") as f:
                     f.write(audio_data)
                 print(f"💾 Saved audio to {output_file}")
+            elif output_file:
+                print("⚠️ Reader não retornou áudio; arquivo vazio não será criado.")
 
             return audio_data
 
