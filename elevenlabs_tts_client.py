@@ -24,7 +24,11 @@ import uuid
 
 import aiohttp
 import websockets
-from elevenlabs.client import ElevenLabs as ElevenLabsClient
+try:
+    from elevenlabs.client import ElevenLabs as ElevenLabsClient
+except ImportError:
+    # O SDK oficial nao e necessario para o protocolo Reader.
+    ElevenLabsClient = None
 from token_manager import TokenManager
 
 
@@ -157,7 +161,7 @@ class ElevenLabsTTSClient:
 
         # Skip official SDK for Firebase Bearer tokens (they use different format)
         # Only use official SDK if token looks like a standard ElevenLabs API key
-        if bearer_token.startswith('sk-') or bearer_token.startswith('el-'):
+        if ElevenLabsClient is not None and (bearer_token.startswith('sk-') or bearer_token.startswith('el-')):
             try:
                 self.official_client = ElevenLabsClient(api_key=bearer_token)
                 if self.verbose:
