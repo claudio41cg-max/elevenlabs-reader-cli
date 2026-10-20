@@ -203,6 +203,14 @@ class ElevenLabsTTSClient:
 
         async with aiohttp.ClientSession(**session_kwargs) as session:
             async with session.get(url, headers=headers) as response:
+                if response.status == 429:
+                    retry_after = response.headers.get("Retry-After", "60")
+                    # Respect the service's rate limit; do not automatically retry or
+                    # create more requests that could consume credits.
+                    raise RuntimeError(
+                        f"Reader limitou as consultas de vozes (HTTP 429). "
+                        f"Aguarde antes de tentar novamente (Retry-After: {retry_after})."
+                    )
                 if self.verbose:
                     self.logger.debug(f"Response status: {response.status}")
                     self.logger.debug(f"Response headers: {dict(response.headers)}")
