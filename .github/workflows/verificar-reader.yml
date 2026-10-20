@@ -30,3 +30,6 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_catalogo_simulado.py' -v
       - name: Testar falha de autenticacao sem rede
         run: python -m unittest discover -s tests -p 'test_erro_autenticacao_simulado.py' -v
+
+      - name: Testar limite HTTP 429 sem repeticoes
+        run: python -m unittest discover -s tests -p 'test_limite_429_simulado.py' -v
