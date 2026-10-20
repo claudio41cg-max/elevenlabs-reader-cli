@@ -738,7 +738,10 @@ class ElevenLabsTTSClient:
             for method_name, method_desc, method_func in methods_to_try:
                 try:
                     print(f"🔧 Trying {method_desc}...")
-                    return await method_func(text, voice_id, output_file, play_audio)
+                    result = await method_func(text, voice_id, output_file, play_audio)
+                    if result:
+                        return result
+                    print(f"⚠️ {method_desc} não retornou áudio; tentando próximo método")
                 except Exception as e:
                     print(f"❌ {method_desc} failed: {e}")
                     continue
