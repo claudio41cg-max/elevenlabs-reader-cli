@@ -1138,6 +1138,8 @@ class ElevenLabsTTSClient:
         base_backoff = 0.5
         max_backoff = 10.0
         backoff = base_backoff
+        consecutive_connection_errors = 0
+        max_connection_errors = 5
 
         # Karaoke controller (single ticker) if preview enabled
         controller = None
@@ -1311,8 +1313,12 @@ class ElevenLabsTTSClient:
 
                     # Reset backoff after a healthy connection
                     backoff = base_backoff
+                    consecutive_connection_errors = 0
             
             except Exception as e:
+                consecutive_connection_errors += 1
+                if consecutive_connection_errors >= max_connection_errors:
+                    raise RuntimeError("Reader: conexão WebSocket falhou repetidamente; execução interrompida.") from None
                 if self.verbose:
                     self.logger.error(f"❌ WebSocket error on connection #{connection_number} at position {current_position}: {e}")
                     self.logger.info(f"⏳ Backing off {backoff:.1f}s before reconnect")
