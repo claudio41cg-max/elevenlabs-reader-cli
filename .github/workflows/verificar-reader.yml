@@ -26,3 +26,5 @@ jobs:
         run: |
           python -m pip install -r requirements.txt
           python tools/verificar_ambiente.py
+      - name: Testar catalogo de vozes com resposta simulada
+        run: python -m unittest discover -s tests -p 'test_catalogo_simulado.py' -v
